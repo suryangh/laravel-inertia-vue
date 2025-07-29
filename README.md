@@ -53,16 +53,7 @@ You can also access the back-end to the /api route.
 6. php artisan serve (or use Laravel Valet)
 ```
 
-
-# Update README dengan info Docker
-cat >> README.md << 'EOF'
-
 ## Docker Setup
-
-### Prerequisites
-- Docker & Docker Compose
-
-### Quick Start with Docker
 ```bash
 # Clone repository
 git clone https://github.com/suryangh/laravel-inertia-vue.git

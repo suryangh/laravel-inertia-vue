@@ -35,10 +35,17 @@
 
 You can also access the back-end to the /api route.
 
+
+
+### Prerequisites
+- nodejs18 & composer 2.5 because the code only support that version
+- Docker & Docker Compose
+
+
 # Installation
 
 ```
-1. git clone 
+1. git clone https://github.com/suryangh/laravel-inertia-vue.git
 2. cd realworld-laravel-inertia-vue
 3. composer install
 4. npm install
@@ -69,7 +76,3 @@ docker compose exec app php artisan migrate --force
 
 # Access application
 open http://localhost:9090
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

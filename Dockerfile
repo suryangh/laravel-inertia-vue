@@ -1,4 +1,3 @@
-# Multi-stage build dengan proper file structure
 FROM node:18-alpine AS node-builder
 
 WORKDIR /app
@@ -8,7 +7,7 @@ COPY package*.json ./
 COPY webpack.mix.js ./
 COPY tailwind.config.js ./
 
-# Copy ALL source files yang dibutuhkan untuk build
+# Copy ALL source files
 COPY resources/ ./resources/
 COPY public/ ./public/
 
@@ -20,18 +19,18 @@ COPY . .
 # Build assets manually
 RUN npm run production
 
-# Main PHP image (SIMPLIFIED & OPTIMIZED)
+# PHP FPM & Nginx Alpine image
 FROM php:8.1-fpm-alpine
 
 ENV TZ=Asia/Jakarta
 
-# Install MINIMAL dependencies (hapus yang tidak perlu)
+# Install MINIMAL dependencies
 RUN apk add --no-cache \
     nginx \
     supervisor \
     mysql-client
 
-# Install MINIMAL PHP extensions (hapus PostgreSQL, Redis, Intl)
+# Install MINIMAL PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libzip-dev \
@@ -55,10 +54,10 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy aplikasi
+# Copy apps
 COPY . .
 
-# Copy built assets dengan proper paths
+# Copy built assets
 COPY --from=node-builder /app/public/js ./public/js/
 COPY --from=node-builder /app/public/css ./public/css/
 COPY --from=node-builder /app/public/mix-manifest.json ./public/
@@ -76,7 +75,7 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Create inline configs (TIDAK PERLU external nginx.conf & supervisord.conf)
+# Create inline configs 
 RUN echo 'events { worker_connections 1024; } \
 http { \
     include mime.types; \
